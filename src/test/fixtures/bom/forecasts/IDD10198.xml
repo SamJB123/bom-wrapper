@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<product type="forecast" version="1.0">
+  <amoc>
+    <source>
+      <sender>Bureau of Meteorology</sender>
+      <issue-time-utc>2026-03-11T04:10:00Z</issue-time-utc>
+    </source>
+  </amoc>
+  <forecast>
+    <area aac="darwin" description="Darwin" type="location">
+      <forecast-period index="0" start-time-local="2026-03-11T00:00:00+09:30" end-time-local="2026-03-11T23:59:59+09:30">
+        <text type="precis">Showers. Possible storm.</text>
+        <text type="forecast">Hot and humid with showers and the risk of a late thunderstorm.</text>
+        <element type="air_temperature_minimum">25</element>
+        <element type="air_temperature_maximum">33</element>
+        <element type="probability_of_precipitation">80%</element>
+        <element type="precipitation_range">2 to 15 mm</element>
+      </forecast-period>
+      <forecast-period index="1" start-time-local="2026-03-12T00:00:00+09:30" end-time-local="2026-03-12T23:59:59+09:30">
+        <text type="precis">Storm possible.</text>
+        <text type="forecast">Partly cloudy morning followed by afternoon showers and possible storms.</text>
+        <element type="air_temperature_minimum">25</element>
+        <element type="air_temperature_maximum">32</element>
+        <element type="probability_of_precipitation">70%</element>
+        <element type="precipitation_range">1 to 12 mm</element>
+      </forecast-period>
+    </area>
+  </forecast>
+</product>

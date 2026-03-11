@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<product type="forecast" version="1.0">
+  <amoc>
+    <source>
+      <sender>Bureau of Meteorology</sender>
+      <issue-time-utc>2026-03-11T04:15:00Z</issue-time-utc>
+    </source>
+  </amoc>
+  <forecast>
+    <area aac="brisbane" description="Brisbane" type="location">
+      <forecast-period index="0" start-time-local="2026-03-11T00:00:00+10:00" end-time-local="2026-03-11T23:59:59+10:00">
+        <text type="precis">Possible storm.</text>
+        <text type="forecast">Humid with afternoon showers and the chance of a thunderstorm.</text>
+        <element type="air_temperature_minimum">23</element>
+        <element type="air_temperature_maximum">30</element>
+        <element type="probability_of_precipitation">70%</element>
+        <element type="precipitation_range">1 to 8 mm</element>
+      </forecast-period>
+      <forecast-period index="1" start-time-local="2026-03-12T00:00:00+10:00" end-time-local="2026-03-12T23:59:59+10:00">
+        <text type="precis">Showers easing.</text>
+        <text type="forecast">Cloudy with morning showers becoming isolated later.</text>
+        <element type="air_temperature_minimum">22</element>
+        <element type="air_temperature_maximum">28</element>
+        <element type="probability_of_precipitation">60%</element>
+        <element type="precipitation_range">0 to 4 mm</element>
+      </forecast-period>
+    </area>
+  </forecast>
+</product>

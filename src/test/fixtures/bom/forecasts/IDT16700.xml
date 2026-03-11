@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<product type="forecast" version="1.0">
+  <amoc>
+    <source>
+      <sender>Bureau of Meteorology</sender>
+      <issue-time-utc>2026-03-11T03:55:00Z</issue-time-utc>
+    </source>
+  </amoc>
+  <forecast>
+    <area aac="hobart" description="Hobart" type="location">
+      <forecast-period index="0" start-time-local="2026-03-11T00:00:00+11:00" end-time-local="2026-03-11T23:59:59+11:00">
+        <text type="precis">Possible shower.</text>
+        <text type="forecast">Partly cloudy with a cool westerly and the slight chance of a shower.</text>
+        <element type="air_temperature_minimum">9</element>
+        <element type="air_temperature_maximum">21</element>
+        <element type="probability_of_precipitation">40%</element>
+        <element type="precipitation_range">0 to 1 mm</element>
+      </forecast-period>
+      <forecast-period index="1" start-time-local="2026-03-12T00:00:00+11:00" end-time-local="2026-03-12T23:59:59+11:00">
+        <text type="precis">Mostly sunny.</text>
+        <text type="forecast">A chilly start followed by a mostly sunny day.</text>
+        <element type="air_temperature_minimum">8</element>
+        <element type="air_temperature_maximum">19</element>
+        <element type="probability_of_precipitation">10%</element>
+        <element type="precipitation_range">0 mm</element>
+      </forecast-period>
+    </area>
+  </forecast>
+</product>

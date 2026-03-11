@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<product type="forecast" version="1.0">
+  <amoc>
+    <source>
+      <sender>Bureau of Meteorology</sender>
+      <issue-time-utc>2026-03-11T04:20:00Z</issue-time-utc>
+    </source>
+  </amoc>
+  <forecast>
+    <area aac="perth" description="Perth" type="location">
+      <forecast-period index="0" start-time-local="2026-03-11T00:00:00+08:00" end-time-local="2026-03-11T23:59:59+08:00">
+        <text type="precis">Hot and sunny.</text>
+        <text type="forecast">Sunny with a fresh afternoon sea breeze.</text>
+        <element type="air_temperature_minimum">18</element>
+        <element type="air_temperature_maximum">33</element>
+        <element type="probability_of_precipitation">5%</element>
+        <element type="precipitation_range">0 mm</element>
+      </forecast-period>
+      <forecast-period index="1" start-time-local="2026-03-12T00:00:00+08:00" end-time-local="2026-03-12T23:59:59+08:00">
+        <text type="precis">Sunny.</text>
+        <text type="forecast">Fine conditions continuing with moderate afternoon winds.</text>
+        <element type="air_temperature_minimum">19</element>
+        <element type="air_temperature_maximum">31</element>
+        <element type="probability_of_precipitation">10%</element>
+        <element type="precipitation_range">0 mm</element>
+      </forecast-period>
+    </area>
+  </forecast>
+</product>
