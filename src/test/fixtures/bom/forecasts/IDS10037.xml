@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<product type="forecast" version="1.0">
+  <amoc>
+    <source>
+      <sender>Bureau of Meteorology</sender>
+      <issue-time-utc>2026-03-11T03:40:00Z</issue-time-utc>
+    </source>
+  </amoc>
+  <forecast>
+    <area aac="adelaide" description="Adelaide" type="location">
+      <forecast-period index="0" start-time-local="2026-03-11T00:00:00+10:30" end-time-local="2026-03-11T23:59:59+10:30">
+        <text type="precis">Sunny and warm.</text>
+        <text type="forecast">Mostly sunny with a fresh southwesterly in the late afternoon.</text>
+        <element type="air_temperature_minimum">15</element>
+        <element type="air_temperature_maximum">28</element>
+        <element type="probability_of_precipitation">5%</element>
+        <element type="precipitation_range">0 mm</element>
+      </forecast-period>
+      <forecast-period index="1" start-time-local="2026-03-12T00:00:00+10:30" end-time-local="2026-03-12T23:59:59+10:30">
+        <text type="precis">Late shower.</text>
+        <text type="forecast">Increasing cloud with a chance of a light evening shower.</text>
+        <element type="air_temperature_minimum">16</element>
+        <element type="air_temperature_maximum">26</element>
+        <element type="probability_of_precipitation">30%</element>
+        <element type="precipitation_range">0 to 1 mm</element>
+      </forecast-period>
+    </area>
+  </forecast>
+</product>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<product type="forecast" version="1.0">
+  <amoc>
+    <source>
+      <sender>Bureau of Meteorology</sender>
+      <issue-time-utc>2026-03-11T03:50:00Z</issue-time-utc>
+    </source>
+  </amoc>
+  <forecast>
+    <area aac="melbourne" description="Melbourne" type="location">
+      <forecast-period index="0" start-time-local="2026-03-11T00:00:00+11:00" end-time-local="2026-03-11T23:59:59+11:00">
+        <text type="precis">Shower or two.</text>
+        <text type="forecast">Cloudy periods with the chance of a passing afternoon shower.</text>
+        <element type="air_temperature_minimum">14</element>
+        <element type="air_temperature_maximum">25</element>
+        <element type="probability_of_precipitation">50%</element>
+        <element type="precipitation_range">0 to 2 mm</element>
+      </forecast-period>
+      <forecast-period index="1" start-time-local="2026-03-12T00:00:00+11:00" end-time-local="2026-03-12T23:59:59+11:00">
+        <text type="precis">Partly cloudy.</text>
+        <text type="forecast">Morning cloud clearing to a mostly sunny afternoon.</text>
+        <element type="air_temperature_minimum">13</element>
+        <element type="air_temperature_maximum">23</element>
+        <element type="probability_of_precipitation">20%</element>
+        <element type="precipitation_range">0 mm</element>
+      </forecast-period>
+    </area>
+  </forecast>
+</product>

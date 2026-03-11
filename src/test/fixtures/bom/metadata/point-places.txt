@@ -1,0 +1,9 @@
+# location_id|name|state|latitude|longitude|timezone|forecast_product_id|station_id
+sydney|Sydney|NSW|-33.8688|151.2093|Australia/Sydney|IDN11050|sydney-airport
+canberra|Canberra|ACT|-35.2809|149.1300|Australia/Sydney|IDN11050|canberra-airport
+melbourne|Melbourne|VIC|-37.8136|144.9631|Australia/Melbourne|IDV10753|melbourne-olympic-park
+brisbane|Brisbane|QLD|-27.4698|153.0251|Australia/Brisbane|IDQ10605|brisbane-airport
+adelaide|Adelaide|SA|-34.9285|138.6007|Australia/Adelaide|IDS10037|adelaide-airport
+perth|Perth|WA|-31.9523|115.8613|Australia/Perth|IDW14199|perth-airport
+hobart|Hobart|TAS|-42.8821|147.3272|Australia/Hobart|IDT16700|hobart-airport
+darwin|Darwin|NT|-12.4634|130.8456|Australia/Darwin|IDD10198|darwin-airport

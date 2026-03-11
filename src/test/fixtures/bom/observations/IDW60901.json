@@ -1,0 +1,34 @@
+{
+  "observations": {
+    "header": [
+      {
+        "refresh_message": "Issued at 12:40 pm AWST Wednesday 11 March 2026",
+        "id": "IDW60901",
+        "name": "Western Australian observations",
+        "state_time_zone": "AWST",
+        "time_zone": "Australia/Perth"
+      }
+    ],
+    "data": [
+      {
+        "wmo": 94610,
+        "name": "Perth Airport",
+        "local_date_time": "11/12:40pm",
+        "local_date_time_full": "20260311124000",
+        "aifstime_utc": "20260311044000",
+        "lat": -31.9275,
+        "lon": 115.9764,
+        "air_temp": 31.2,
+        "apparent_t": 29.8,
+        "dewpt": 10.8,
+        "rel_hum": 28,
+        "wind_dir": "SW",
+        "wind_spd_kmh": 26,
+        "gust_kmh": 41,
+        "press": 1009.9,
+        "press_msl": 1011.2,
+        "rain_trace": "0.0"
+      }
+    ]
+  }
+}

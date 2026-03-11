@@ -1,0 +1,9 @@
+# station_id|wmo_id|name|state|latitude|longitude|elevation_metres|timezone|observation_product_id|forecast_location_id
+sydney-airport|94767|Sydney Airport|NSW|-33.9399|151.1753|6|Australia/Sydney|IDN60901|sydney
+canberra-airport|94926|Canberra Airport|ACT|-35.3075|149.1950|577|Australia/Sydney|IDN60901|canberra
+melbourne-olympic-park|95936|Melbourne Olympic Park|VIC|-37.8255|144.9830|8|Australia/Melbourne|IDV60901|melbourne
+brisbane-airport|94578|Brisbane Airport|QLD|-27.3943|153.1218|4|Australia/Brisbane|IDQ60901|brisbane
+adelaide-airport|94672|Adelaide Airport|SA|-34.9469|138.5319|4|Australia/Adelaide|IDS60901|adelaide
+perth-airport|94610|Perth Airport|WA|-31.9275|115.9764|12|Australia/Perth|IDW60901|perth
+hobart-airport|94975|Hobart Airport|TAS|-42.8361|147.5103|4|Australia/Hobart|IDT60901|hobart
+darwin-airport|94120|Darwin Airport|NT|-12.4239|130.8925|30|Australia/Darwin|IDD60901|darwin

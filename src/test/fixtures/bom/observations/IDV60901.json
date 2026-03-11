@@ -1,0 +1,34 @@
+{
+  "observations": {
+    "header": [
+      {
+        "refresh_message": "Issued at 2:50 pm AEDT Wednesday 11 March 2026",
+        "id": "IDV60901",
+        "name": "Victorian observations",
+        "state_time_zone": "AEDT",
+        "time_zone": "Australia/Melbourne"
+      }
+    ],
+    "data": [
+      {
+        "wmo": 95936,
+        "name": "Melbourne Olympic Park",
+        "local_date_time": "11/02:50pm",
+        "local_date_time_full": "20260311145000",
+        "aifstime_utc": "20260311035000",
+        "lat": -37.8255,
+        "lon": 144.983,
+        "air_temp": 24.8,
+        "apparent_t": 23.2,
+        "dewpt": 11.1,
+        "rel_hum": 42,
+        "wind_dir": "S",
+        "wind_spd_kmh": 19,
+        "gust_kmh": 31,
+        "press": 1016.1,
+        "press_msl": 1018.4,
+        "rain_trace": "0.2"
+      }
+    ]
+  }
+}

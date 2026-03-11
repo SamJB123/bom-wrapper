@@ -1,0 +1,53 @@
+{
+  "observations": {
+    "header": [
+      {
+        "refresh_message": "Issued at 3:00 pm AEDT Wednesday 11 March 2026",
+        "id": "IDN60901",
+        "name": "New South Wales and ACT observations",
+        "state_time_zone": "AEDT",
+        "time_zone": "Australia/Sydney"
+      }
+    ],
+    "data": [
+      {
+        "wmo": 94767,
+        "name": "Sydney Airport",
+        "local_date_time": "11/03:00pm",
+        "local_date_time_full": "20260311150000",
+        "aifstime_utc": "20260311040000",
+        "lat": -33.9399,
+        "lon": 151.1753,
+        "air_temp": 26.4,
+        "apparent_t": 28.1,
+        "dewpt": 18.7,
+        "rel_hum": 63,
+        "wind_dir": "ENE",
+        "wind_spd_kmh": 17,
+        "gust_kmh": 24,
+        "press": 1013.2,
+        "press_msl": 1015.4,
+        "rain_trace": "0.0"
+      },
+      {
+        "wmo": 94926,
+        "name": "Canberra Airport",
+        "local_date_time": "11/03:00pm",
+        "local_date_time_full": "20260311150000",
+        "aifstime_utc": "20260311040000",
+        "lat": -35.3075,
+        "lon": 149.195,
+        "air_temp": 22.1,
+        "apparent_t": 20.7,
+        "dewpt": 7.4,
+        "rel_hum": 39,
+        "wind_dir": "NW",
+        "wind_spd_kmh": 28,
+        "gust_kmh": 39,
+        "press": 1008.8,
+        "press_msl": 1011.3,
+        "rain_trace": "0.0"
+      }
+    ]
+  }
+}

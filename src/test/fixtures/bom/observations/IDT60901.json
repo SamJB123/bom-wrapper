@@ -1,0 +1,34 @@
+{
+  "observations": {
+    "header": [
+      {
+        "refresh_message": "Issued at 2:10 pm AEDT Wednesday 11 March 2026",
+        "id": "IDT60901",
+        "name": "Tasmanian observations",
+        "state_time_zone": "AEDT",
+        "time_zone": "Australia/Hobart"
+      }
+    ],
+    "data": [
+      {
+        "wmo": 94975,
+        "name": "Hobart Airport",
+        "local_date_time": "11/02:10pm",
+        "local_date_time_full": "20260311141000",
+        "aifstime_utc": "20260311031000",
+        "lat": -42.8361,
+        "lon": 147.5103,
+        "air_temp": 20.3,
+        "apparent_t": 18.5,
+        "dewpt": 8.9,
+        "rel_hum": 48,
+        "wind_dir": "W",
+        "wind_spd_kmh": 21,
+        "gust_kmh": 33,
+        "press": 1018.6,
+        "press_msl": 1020.9,
+        "rain_trace": "0.0"
+      }
+    ]
+  }
+}

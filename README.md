@@ -1,68 +1,81 @@
-# TanStack Start - Cloudflare Example
+# BOM Access Layer
 
-A TanStack Start example demonstrating deployment to Cloudflare Workers.
+An external-facing weather platform built with TanStack Start on Cloudflare Workers.
 
-- [TanStack Router Docs](https://tanstack.com/router)
-- [Cloudflare Workers Documentation](https://developers.cloudflare.com/workers/)
+It combines:
 
-## Start a new project based on this example
+- a typed **oRPC + OpenAPI API**
+- curated **BOM-style observation and forecast normalization**
+- a polished **Three.js WebGPU globe route**
 
-To start a new project based on this example, run:
+## What it includes
 
-```sh
-npx gitpick TanStack/router/tree/main/examples/react/start-basic-cloudflare start-basic-cloudflare
-```
+### API
 
-## Getting Started
+- `GET /api/v1/health`
+- `GET /api/v1/sources`
+- `GET /api/v1/locations/search`
+- `GET /api/v1/stations`
+- `GET /api/v1/stations/{stationId}`
+- `GET /api/v1/stations/{stationId}/observation`
+- `GET /api/v1/forecasts/{locationId}`
+- `GET /api/v1/overview/australia`
+- `GET /api/openapi.json`
+- `GET /api/docs`
 
-From your terminal:
+### UI
+
+- Product landing page
+- Interactive API docs
+- Australia weather globe route at `/globe`
+- Graceful WebGPU fallback state when browser support is unavailable
+
+## Development
 
 ```sh
 pnpm install
 pnpm dev
 ```
 
-This starts your app in development mode, rebuilding assets on file changes.
+The local dev server starts on port `3000` by default.
 
-## Build
+## Tests
 
-To build the app for production:
+Run the targeted automated suite:
+
+```sh
+pnpm exec vitest run
+```
+
+## Production build
 
 ```sh
 pnpm build
 ```
 
-## Preview
-
-To preview the production build locally:
-
-```sh
-pnpm preview
-```
-
-## Deploy to Cloudflare
-
-To deploy your app to Cloudflare Workers:
+## Deployment
 
 ```sh
 pnpm run deploy
 ```
 
-## Accessing Cloudflare Bindings
+## Data mode
 
-You can access Cloudflare bindings in server functions by using importable `env`:
+This project defaults to **fixture mode** so the API and globe remain fully testable in environments where automated access to live BOM infrastructure is blocked.
 
-```ts
-import { env } from 'cloudflare:workers'
-```
+Optional runtime toggles:
 
-See `src/routes/index.tsx` for an example.
+- `VITE_BOM_DATA_MODE=live`
+- `BOM_DATA_MODE=live`
+- `VITE_BOM_FORECAST_BASE_URL=https://...`
+- `BOM_FORECAST_BASE_URL=https://...`
 
-## Cloudflare Configuration
+Live forecast retrieval requires a configured forecast base URL. Observation live mode targets documented BOM-style JSON feed URLs for the curated station set.
 
-This example includes:
+## BOM attribution and usage
 
-- Wrangler configuration for Cloudflare Workers
-- Type generation for Cloudflare bindings
-- Server-side rendering on the edge
-- Access to Cloudflare platform features (KV, D1, R2, etc.)
+This project is built around Bureau of Meteorology-style products and should be attributed to the **Bureau of Meteorology**.
+
+Please review BOM copyright and redistribution guidance before using this project beyond internal prototyping or demos:
+
+- https://www.bom.gov.au/other/copyright.shtml
