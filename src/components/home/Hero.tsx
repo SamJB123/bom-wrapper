@@ -3,9 +3,11 @@ import { Link } from '@tanstack/react-router'
 export function Hero({
   markerCount,
   dataMode,
+  provider,
 }: {
   markerCount: number
   dataMode: string
+  provider: string
 }) {
   return (
     <section className="relative overflow-hidden">
@@ -54,7 +56,7 @@ export function Hero({
             <p className="text-sm font-medium uppercase tracking-[0.24em] text-slate-400">
               Snapshot
             </p>
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid gap-4 sm:grid-cols-3">
               <div className="rounded-2xl border border-cyan-300/20 bg-cyan-300/10 p-4">
                 <div className="text-sm text-cyan-100/75">Curated weather points</div>
                 <div className="mt-2 text-3xl font-black text-white">
@@ -67,11 +69,19 @@ export function Hero({
                   {dataMode}
                 </div>
               </div>
+              <div className="rounded-2xl border border-emerald-300/20 bg-emerald-300/10 p-4">
+                <div className="text-sm text-emerald-100/75">Active provider</div>
+                <div className="mt-2 text-2xl font-black text-white">
+                  {provider}
+                </div>
+              </div>
             </div>
             <div className="rounded-2xl border border-white/10 bg-white/5 p-4 text-sm leading-7 text-slate-300">
-              This build defaults to <strong className="text-white">fixture mode</strong>{' '}
-              so the API and globe stay fully testable even when live BOM access
-              is blocked from automated environments.
+              This platform now includes an internal TypeScript port of the
+              weather-au capability set, so the same normalized API can run in{' '}
+              <strong className="text-white">fixture</strong> or{' '}
+              <strong className="text-white">live</strong> mode depending on
+              configuration.
             </div>
           </div>
         </div>

@@ -86,6 +86,18 @@ function normalizeSearchTerms(search: string) {
   return [...fallbacks]
 }
 
+function extractRequestedState(search: string) {
+  const tokens = search
+    .trim()
+    .replaceAll('+', ' ')
+    .split(/\s+/)
+    .map((token) => token.toUpperCase())
+
+  return (
+    tokens.find((token) => SEARCH_FALLBACK_STATE_CODES.includes(token)) ?? null
+  )
+}
+
 export class WeatherApi {
   static async create(options?: WeatherApiCreateOptions) {
     const api = new WeatherApi(options)
@@ -139,17 +151,29 @@ export class WeatherApi {
       return []
     }
 
+    const requestedState = extractRequestedState(search)
+
     for (const candidate of normalizeSearchTerms(search)) {
       const results = await this.request(
         buildWeatherApiLocationSearchUrl(candidate),
         parseWeatherApiSearchResponse,
       )
+      const orderedResults =
+        requestedState === null
+          ? results
+          : [...results].sort((left, right) => {
+              const leftScore = left.state.toUpperCase() === requestedState ? 1 : 0
+              const rightScore =
+                right.state.toUpperCase() === requestedState ? 1 : 0
 
-      if (results.length > select) {
-        this.locationResult = results[select] ?? null
+              return rightScore - leftScore
+            })
+
+      if (orderedResults.length > select) {
+        this.locationResult = orderedResults[select] ?? null
         this.geohash = formatGeohash(this.locationResult?.geohash)
 
-        return results
+        return orderedResults
       }
     }
 

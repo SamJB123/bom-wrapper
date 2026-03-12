@@ -39,8 +39,14 @@ export function buildObservationUrl(productId: string, wmoId: string) {
 }
 
 export function buildForecastUrl(productId: string) {
+  const viteForecastBaseUrl =
+    typeof import.meta !== 'undefined' &&
+    typeof import.meta.env !== 'undefined'
+      ? import.meta.env.VITE_BOM_FORECAST_BASE_URL
+      : undefined
+
   const overrideBaseUrl =
-    import.meta.env.VITE_BOM_FORECAST_BASE_URL ||
+    viteForecastBaseUrl ||
     (typeof process !== 'undefined' ? process.env.BOM_FORECAST_BASE_URL : '')
 
   if (!overrideBaseUrl) {

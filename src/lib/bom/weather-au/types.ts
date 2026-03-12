@@ -38,8 +38,8 @@ export type WeatherApiLocation = {
   timezone: string
   latitude: number
   longitude: number
-  marine_area_id?: string
-  tidal_point?: string
+  marine_area_id?: string | null
+  tidal_point?: string | null
   has_wave?: boolean
   id: string
   name: string
@@ -78,31 +78,31 @@ export type WeatherApiObservation = {
     direction?: string
     gust_speed_knot?: number
     gust_speed_kilometre?: number
-  }
+  } | null
   gust?: {
     speed_kilometre?: number
     speed_knot?: number
-  }
+  } | null
   max_gust?: {
     speed_kilometre?: number
     speed_knot?: number
     time?: string
-  }
+  } | null
   max_temp?: {
     time?: string
     value?: number
-  }
+  } | null
   min_temp?: {
     time?: string
     value?: number
-  }
+  } | null
   rain_since_9am?: number
   humidity?: number
   station?: {
     bom_id?: string
     name?: string
     distance?: number
-  }
+  } | null
   dew_point?: number
   relative_humidity?: number
   uv?: number
@@ -133,10 +133,10 @@ export type WeatherApiDailyForecast = {
     precipitation_amount_75_percent_chance?: number
   }
   uv?: {
-    category?: string
-    end_time?: string
-    max_index?: number
-    start_time?: string
+    category?: string | null
+    end_time?: string | null
+    max_index?: number | null
+    start_time?: string | null
   }
   astronomical?: {
     sunrise_time?: string
@@ -151,9 +151,9 @@ export type WeatherApiDailyForecast = {
   surf_danger?: string | null
   fire_danger?: string | null
   fire_danger_category?: {
-    text?: string
-    default_colour?: string
-    dark_mode_colour?: string
+    text?: string | null
+    default_colour?: string | null
+    dark_mode_colour?: string | null
   }
   now?: {
     is_night?: boolean

@@ -35,8 +35,9 @@ export function listUvLocations(xml: string) {
   for (const area of Array.from(
     document.querySelectorAll('area[type="location"]'),
   )) {
-    const description = area.getAttribute('description')
-    const aac = area.getAttribute('aac')
+    const typedArea = area as Element
+    const description = typedArea.getAttribute('description')
+    const aac = typedArea.getAttribute('aac')
 
     if (description && aac) {
       locations.set(description, aac)

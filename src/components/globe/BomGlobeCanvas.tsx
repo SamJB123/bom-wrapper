@@ -105,6 +105,7 @@ export function BomGlobeCanvas({
         markerCount={markers.length}
         generatedAt={overview.generatedAt}
         dataMode={overview.dataMode}
+        provider={overview.provider}
       />
 
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1.25fr)_minmax(320px,0.75fr)]">

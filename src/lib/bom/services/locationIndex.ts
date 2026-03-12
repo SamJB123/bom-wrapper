@@ -1,6 +1,11 @@
+import { getBomDataMode } from '../mode'
+import { searchLiveLocations } from '../sources/liveLocationSource'
 import { listPointPlaceMetadata } from '../sources/pointPlaceSource'
 import { listStationMetadata } from '../sources/stationSource'
-import { locationSearchResponseSchema } from '../types'
+import {
+  locationSearchResponseSchema,
+  type LocationSearchResponse,
+} from '../types'
 
 function toSearchableText(...values: Array<string | null | undefined>) {
   return values
@@ -14,6 +19,7 @@ export async function searchLocations(options?: {
   kind?: 'station' | 'forecast-location'
   limit?: number
 }) {
+  const mode = getBomDataMode()
   const [stations, locations] = await Promise.all([
     listStationMetadata(),
     listPointPlaceMetadata(),
@@ -57,6 +63,24 @@ export async function searchLocations(options?: {
     .filter((item) => (query ? item.searchText.includes(query) : true))
     .slice(0, limit)
     .map(({ searchText: _searchText, ...item }) => item)
+
+  if (mode === 'live' && kind !== 'station' && query.length > 0) {
+    const liveItems = await searchLiveLocations(query, limit)
+    const mergedItems: Array<LocationSearchResponse['items'][number]> = [...items]
+
+    for (const liveItem of liveItems) {
+      const alreadyIncluded = mergedItems.some((item) => item.id === liveItem.id)
+
+      if (!alreadyIncluded && mergedItems.length < limit) {
+        mergedItems.push(liveItem)
+      }
+    }
+
+    return locationSearchResponseSchema.parse({
+      items: mergedItems,
+      total: mergedItems.length,
+    })
+  }
 
   return locationSearchResponseSchema.parse({
     items,

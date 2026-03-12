@@ -83,6 +83,9 @@ export function GlobeSidebar({
         </div>
         <div className="mt-3 space-y-2">
           <p>
+            Provider <strong>{marker.observation.source.provider}</strong>
+          </p>
+          <p>
             Observation product <strong>{marker.station.observationProductId}</strong>
           </p>
           <p>

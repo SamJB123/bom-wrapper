@@ -1,8 +1,14 @@
 import { bomDataModeSchema } from './types'
 
 export function getBomDataMode() {
+  const viteMode =
+    typeof import.meta !== 'undefined' &&
+    typeof import.meta.env !== 'undefined'
+      ? import.meta.env.VITE_BOM_DATA_MODE
+      : undefined
+
   const rawMode =
-    import.meta.env.VITE_BOM_DATA_MODE ||
+    viteMode ||
     (typeof process !== 'undefined' ? process.env.BOM_DATA_MODE : undefined) ||
     'fixture'
 

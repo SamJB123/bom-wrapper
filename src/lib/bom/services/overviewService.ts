@@ -1,5 +1,6 @@
 import { bomAttribution } from '../source-config'
 import { getBomDataMode } from '../mode'
+import { getDefaultProviderForMode } from '../providers'
 import { getForecastLocation, getForecast } from './forecastService'
 import { getObservation, getStation, listStations } from './observationService'
 import { australiaOverviewResponseSchema } from '../types'
@@ -40,6 +41,9 @@ export async function getAustraliaOverview() {
   return australiaOverviewResponseSchema.parse({
     generatedAt: new Date().toISOString(),
     dataMode: getBomDataMode(),
+    provider:
+      markers[0]?.observation.source.provider ??
+      getDefaultProviderForMode(getBomDataMode()),
     markers,
     attribution: bomAttribution,
   })

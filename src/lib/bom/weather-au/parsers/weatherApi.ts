@@ -5,6 +5,7 @@ import type {
   WeatherApiEnvelope,
   WeatherApiHourlyForecast,
   WeatherApiLocation,
+  WeatherApiMetadata,
   WeatherApiObservation,
   WeatherApiRainForecast,
   WeatherApiSearchResult,
@@ -32,8 +33,8 @@ const locationSchema = z.object({
   timezone: z.string(),
   latitude: z.number(),
   longitude: z.number(),
-  marine_area_id: z.string().optional(),
-  tidal_point: z.string().optional(),
+  marine_area_id: z.string().nullable().optional(),
+  tidal_point: z.string().nullable().optional(),
   has_wave: z.boolean().optional(),
   id: z.string(),
   name: z.string(),
@@ -74,12 +75,13 @@ const windSchema = z.object({
 const observationSchema = z.object({
   temp: z.number(),
   temp_feels_like: z.number().optional(),
-  wind: windSchema.optional(),
+  wind: windSchema.nullable().optional(),
   gust: z
     .object({
       speed_kilometre: z.number().optional(),
       speed_knot: z.number().optional(),
     })
+    .nullable()
     .optional(),
   max_gust: z
     .object({
@@ -87,18 +89,21 @@ const observationSchema = z.object({
       speed_knot: z.number().optional(),
       time: z.string().optional(),
     })
+    .nullable()
     .optional(),
   max_temp: z
     .object({
       time: z.string().optional(),
       value: z.number().optional(),
     })
+    .nullable()
     .optional(),
   min_temp: z
     .object({
       time: z.string().optional(),
       value: z.number().optional(),
     })
+    .nullable()
     .optional(),
   rain_since_9am: z.number().optional(),
   humidity: z.number().optional(),
@@ -108,6 +113,7 @@ const observationSchema = z.object({
       name: z.string().optional(),
       distance: z.number().optional(),
     })
+    .nullable()
     .optional(),
   dew_point: z.number().optional(),
   relative_humidity: z.number().optional(),
@@ -142,10 +148,10 @@ const dailyForecastSchema = z.object({
     .optional(),
   uv: z
     .object({
-      category: z.string().optional(),
-      end_time: z.string().optional(),
-      max_index: z.number().optional(),
-      start_time: z.string().optional(),
+      category: z.string().nullable().optional(),
+      end_time: z.string().nullable().optional(),
+      max_index: z.number().nullable().optional(),
+      start_time: z.string().nullable().optional(),
     })
     .optional(),
   astronomical: z
@@ -164,9 +170,9 @@ const dailyForecastSchema = z.object({
   fire_danger: z.string().nullable().optional(),
   fire_danger_category: z
     .object({
-      text: z.string().optional(),
-      default_colour: z.string().optional(),
-      dark_mode_colour: z.string().optional(),
+      text: z.string().nullable().optional(),
+      default_colour: z.string().nullable().optional(),
+      dark_mode_colour: z.string().nullable().optional(),
     })
     .optional(),
   now: z
@@ -205,12 +211,12 @@ const hourlyForecastSchema = z.object({
 
 const apiEnvelopeSchema = <TData extends z.ZodTypeAny>(dataSchema: TData) =>
   z.object({
-    metadata: metadataSchema,
+    metadata: metadataSchema.optional(),
     data: dataSchema,
   })
 
 function parseEnvelope<TData>(
-  schema: z.ZodType<WeatherApiEnvelope<TData>>,
+  schema: z.ZodType<{ metadata?: WeatherApiMetadata; data: TData }>,
   value: unknown,
   message: string,
 ) {
@@ -220,7 +226,16 @@ function parseEnvelope<TData>(
     throw new WeatherAuParseError(message, parsed.error.flatten())
   }
 
-  return parsed.data
+  return {
+    metadata: {
+      response_timestamp:
+        parsed.data.metadata?.response_timestamp ?? new Date().toISOString(),
+      copyright: parsed.data.metadata?.copyright ?? '',
+      issue_time: parsed.data.metadata?.issue_time,
+      observation_time: parsed.data.metadata?.observation_time,
+    },
+    data: parsed.data.data,
+  } satisfies WeatherApiEnvelope<TData>
 }
 
 export function parseWeatherApiSearchResponse(value: unknown) {

@@ -74,6 +74,7 @@ function Home() {
       <Hero
         markerCount={data.overview.markers.length}
         dataMode={data.overview.dataMode.toUpperCase()}
+        provider={data.overview.provider.toUpperCase()}
       />
       <MetricStrip metrics={metrics} />
       <FeatureCards />
@@ -149,7 +150,7 @@ function Home() {
                   <div className="flex items-center justify-between gap-3">
                     <h3 className="font-semibold text-white">{source.label}</h3>
                     <span className="rounded-full border border-white/8 px-3 py-1 text-xs uppercase tracking-[0.24em] text-slate-300">
-                      {source.status}
+                      {source.status} • {source.activeProvider}
                     </span>
                   </div>
                   <p className="mt-2 text-sm leading-7 text-slate-300">

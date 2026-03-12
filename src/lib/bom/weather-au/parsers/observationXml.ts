@@ -41,8 +41,8 @@ export function parseObservationXmlDocument(xml: string) {
 
 export function listObservationStations(xml: string) {
   const { document, identifier } = parseObservationXmlDocument(xml)
-  const stations = Array.from(document.querySelectorAll('station')).map((station) =>
-    elementAttributesToRecord(station),
+  const stations = Array.from(document.querySelectorAll('station')).map(
+    (station) => elementAttributesToRecord(station as Element),
   )
 
   return {

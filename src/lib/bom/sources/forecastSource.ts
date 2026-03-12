@@ -2,16 +2,21 @@ import { forecastFixtures } from '~/test/fixtures/bom/forecasts'
 import { withCache } from '../cache'
 import { unsupportedLiveSource } from '../errors'
 import { fetchUpstreamText } from '../http'
-import { getBomDataMode } from '../mode'
 import { buildForecastUrl } from '../source-config'
 import type { ForecastLocation } from '../types'
 
 export async function loadRawForecastPayload(location: ForecastLocation) {
-  const mode = getBomDataMode()
-  const cacheKey = `bom:forecast:${mode}:${location.forecastProductId}`
+  return loadRawForecastPayloadForProvider(location, 'fixture')
+}
+
+export async function loadRawForecastPayloadForProvider(
+  location: ForecastLocation,
+  provider: 'fixture' | 'fwo-json',
+) {
+  const cacheKey = `bom:forecast:${provider}:${location.forecastProductId}:${location.id}`
 
   return withCache(cacheKey, 1000 * 60 * 15, async () => {
-    if (mode === 'fixture') {
+    if (provider === 'fixture') {
       const fixture =
         forecastFixtures[
           location.forecastProductId as keyof typeof forecastFixtures

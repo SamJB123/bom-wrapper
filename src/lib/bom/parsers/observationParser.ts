@@ -62,6 +62,14 @@ function parseRainTrace(value: string | number | null | undefined) {
 export function parseObservationSnapshot(
   rawObservation: unknown,
   station: ObservationStation,
+  options?: {
+    provider?: 'fixture' | 'fwo-json'
+    status?: 'fixture' | 'ok'
+    channel?: 'fixture' | 'http'
+    note?: string
+    fetchedAt?: string
+    url?: string
+  },
 ) {
   const parsedObservation = rawObservationSchema.safeParse(rawObservation)
 
@@ -97,12 +105,16 @@ export function parseObservationSnapshot(
     rainfallSince9amMm: parseRainTrace(matchingRow.rain_trace),
     source: {
       dataset: header?.name ?? 'BOM observations',
-      channel: 'fixture',
-      status: 'fixture',
+      provider: options?.provider ?? 'fixture',
+      channel: options?.channel ?? 'fixture',
+      status: options?.status ?? 'fixture',
       productId: station.observationProductId,
-      fetchedAt: new Date().toISOString(),
+      url: options?.url,
+      fetchedAt: options?.fetchedAt ?? new Date().toISOString(),
       issuedAt: parseCompactUtcDate(matchingRow.aifstime_utc),
-      note: 'Fixture-backed observation parsed from a BOM-style JSON payload.',
+      note:
+        options?.note ??
+        'Fixture-backed observation parsed from a BOM-style JSON payload.',
     },
   })
 }

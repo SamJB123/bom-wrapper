@@ -19,10 +19,12 @@ describe('oRPC router', () => {
 
     const payload = (await result.response?.json()) as {
       status: string
+      provider: string
       sourceStatuses: unknown
     }
 
     expect(payload.status).toMatch(/ok|degraded/)
+    expect(payload.provider).toBeTruthy()
     expect(Array.isArray(payload.sourceStatuses)).toBe(true)
   })
 
@@ -32,5 +34,8 @@ describe('oRPC router', () => {
     expect(document.openapi).toBe('3.1.1')
     expect(document.paths?.['/v1/overview/australia']).toBeDefined()
     expect(document.paths?.['/v1/stations/{stationId}/observation']).toBeDefined()
+    expect(document.paths?.['/v1/locations/{locationId}/summary']).toBeDefined()
+    expect(document.paths?.['/v1/locations/{locationId}/warnings']).toBeDefined()
+    expect(document.paths?.['/v1/locations/{locationId}/uv']).toBeDefined()
   })
 })

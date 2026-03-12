@@ -5,6 +5,11 @@ const featureCards = [
       'oRPC contracts define stable endpoints for stations, observations, daily forecasts, source health, and an Australia overview dataset.',
   },
   {
+    title: 'weather-au, reimagined for Workers',
+    description:
+      'A TypeScript port of the weather-au module families now underpins live Weather API, XML, place, UV, and summary capabilities inside this Worker-native codebase.',
+  },
+  {
     title: 'OpenAPI by default',
     description:
       'The API ships with generated OpenAPI JSON and interactive documentation so downstream teams can integrate quickly.',
@@ -19,7 +24,7 @@ const featureCards = [
 export function FeatureCards() {
   return (
     <section className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:px-8 lg:py-10">
-      <div className="grid gap-4 lg:grid-cols-3">
+      <div className="grid gap-4 lg:grid-cols-2 xl:grid-cols-4">
         {featureCards.map((card) => (
           <article
             key={card.title}

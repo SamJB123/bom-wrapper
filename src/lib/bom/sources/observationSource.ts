@@ -8,7 +8,6 @@ import observationWa from '~/test/fixtures/bom/observations/IDW60901.json'
 import { withCache } from '../cache'
 import { unsupportedLiveSource } from '../errors'
 import { fetchUpstreamText } from '../http'
-import { getBomDataMode } from '../mode'
 import { buildObservationUrl } from '../source-config'
 import type { ObservationStation } from '../types'
 
@@ -23,11 +22,17 @@ const observationFixtures = new Map<string, unknown>([
 ])
 
 export async function loadRawObservationPayload(station: ObservationStation) {
-  const mode = getBomDataMode()
-  const cacheKey = `bom:observation:${mode}:${station.observationProductId}`
+  return loadRawObservationPayloadForProvider(station, 'fixture')
+}
+
+export async function loadRawObservationPayloadForProvider(
+  station: ObservationStation,
+  provider: 'fixture' | 'fwo-json',
+) {
+  const cacheKey = `bom:observation:${provider}:${station.observationProductId}:${station.wmoId}`
 
   return withCache(cacheKey, 1000 * 60 * 5, async () => {
-    if (mode === 'fixture') {
+    if (provider === 'fixture') {
       const fixture = observationFixtures.get(station.observationProductId)
 
       if (!fixture) {

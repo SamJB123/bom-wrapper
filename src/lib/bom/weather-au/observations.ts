@@ -25,7 +25,7 @@ export class Observations {
   readonly identifier: string
   readonly url: string
 
-  private readonly document: Document
+  private readonly document: ReturnType<typeof parseObservationXmlDocument>['document']
 
   private constructor(
     readonly state: WeatherAuState,

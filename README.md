@@ -5,7 +5,8 @@ An external-facing weather platform built with TanStack Start on Cloudflare Work
 It combines:
 
 - a typed **oRPC + OpenAPI API**
-- curated **BOM-style observation and forecast normalization**
+- curated and live **BOM observation and forecast normalization**
+- an internal **TypeScript port of the relevant weather-au capability set**
 - a polished **Three.js WebGPU globe route**
 
 ## What it includes
@@ -20,6 +21,9 @@ It combines:
 - `GET /api/v1/stations/{stationId}/observation`
 - `GET /api/v1/forecasts/{locationId}`
 - `GET /api/v1/overview/australia`
+- `GET /api/v1/locations/{locationId}/summary`
+- `GET /api/v1/locations/{locationId}/warnings`
+- `GET /api/v1/locations/{locationId}/uv`
 - `GET /api/openapi.json`
 - `GET /api/docs`
 
@@ -67,10 +71,30 @@ Optional runtime toggles:
 
 - `VITE_BOM_DATA_MODE=live`
 - `BOM_DATA_MODE=live`
+- `VITE_BOM_LIVE_PROVIDER=auto|weather-api|fwo-json`
+- `BOM_LIVE_PROVIDER=auto|weather-api|fwo-json`
 - `VITE_BOM_FORECAST_BASE_URL=https://...`
 - `BOM_FORECAST_BASE_URL=https://...`
 
-Live forecast retrieval requires a configured forecast base URL. Observation live mode targets documented BOM-style JSON feed URLs for the curated station set.
+Live provider behavior:
+
+- `weather-api` uses the live endpoint family referenced by weather-au
+- `fwo-json` / XML fallback uses BOM FWO-style products where configured and reachable
+- `auto` prefers `weather-api` first and can fall back to FWO-backed sources
+
+The Worker still defaults to **fixture mode** for deterministic testing and safer deployment.
+
+## Internal weather-au TypeScript port
+
+This repo now includes a TypeScript reimplementation of the key weather-au module families:
+
+- Weather API
+- Observations XML
+- Place page parsing
+- UV index XML
+- Summary aggregation
+
+It is used as the live BOM integration layer underneath the normalized API surface.
 
 ## BOM attribution and usage
 

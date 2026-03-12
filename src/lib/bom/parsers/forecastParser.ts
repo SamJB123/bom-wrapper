@@ -100,7 +100,18 @@ function toDateOnly(value: string) {
   return parsedDate.toISOString().slice(0, 10)
 }
 
-export function parseForecastPeriods(rawForecast: string, location: ForecastLocation) {
+export function parseForecastPeriods(
+  rawForecast: string,
+  location: ForecastLocation,
+  options?: {
+    provider?: 'fixture' | 'fwo-json'
+    status?: 'fixture' | 'ok'
+    channel?: 'fixture' | 'http'
+    note?: string
+    fetchedAt?: string
+    url?: string
+  },
+) {
   const rawDocument = xmlParser.parse(rawForecast)
   const parsedDocument = forecastDocumentSchema.safeParse(rawDocument)
 
@@ -146,12 +157,16 @@ export function parseForecastPeriods(rawForecast: string, location: ForecastLoca
       ),
       source: {
         dataset: 'BOM city forecast XML',
-        channel: 'fixture',
-        status: 'fixture',
+        provider: options?.provider ?? 'fixture',
+        channel: options?.channel ?? 'fixture',
+        status: options?.status ?? 'fixture',
         productId: location.forecastProductId,
-        fetchedAt: new Date().toISOString(),
+        url: options?.url,
+        fetchedAt: options?.fetchedAt ?? new Date().toISOString(),
         issuedAt: new Date(issueTimeUtc).toISOString(),
-        note: 'Fixture-backed forecast parsed from a BOM-style XML package.',
+        note:
+          options?.note ??
+          'Fixture-backed forecast parsed from a BOM-style XML package.',
       },
     })
   })

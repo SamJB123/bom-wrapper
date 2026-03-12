@@ -1,5 +1,9 @@
 import { buildForecastUrl, bomAttribution } from '../source-config'
 import { getBomDataMode } from '../mode'
+import {
+  getDefaultProviderForMode,
+  getOrderedLiveProviders,
+} from '../providers'
 import { listPointPlaceMetadata } from '../sources/pointPlaceSource'
 import { listStationMetadata } from '../sources/stationSource'
 import {
@@ -10,6 +14,8 @@ import {
 
 async function buildSourceCapabilities(): Promise<Array<SourceCapability>> {
   const mode = getBomDataMode()
+  const activeProvider = getDefaultProviderForMode(mode)
+  const liveProviders = getOrderedLiveProviders()
   const [stations, locations] = await Promise.all([
     listStationMetadata(),
     listPointPlaceMetadata(),
@@ -17,9 +23,15 @@ async function buildSourceCapabilities(): Promise<Array<SourceCapability>> {
 
   const observationProductIds = [...new Set(stations.map((item) => item.observationProductId))]
   const forecastProductIds = [...new Set(locations.map((item) => item.forecastProductId))]
-  const forecastBaseConfigured = Boolean(
+  const xmlForecastBaseConfigured = Boolean(
     forecastProductIds.map((productId) => buildForecastUrl(productId)).find(Boolean),
   )
+  const forecastLiveStatus =
+    mode === 'fixture'
+      ? 'fixture'
+      : activeProvider === 'weather-api' || xmlForecastBaseConfigured
+        ? 'ok'
+        : 'degraded'
 
   return [
     {
@@ -27,6 +39,7 @@ async function buildSourceCapabilities(): Promise<Array<SourceCapability>> {
       label: 'Curated station metadata',
       category: 'metadata',
       mode,
+      activeProvider: 'fixture',
       status: 'fixture',
       description:
         'Curated station metadata links station identifiers, WMO IDs, coordinates, and BOM product IDs for this demo.',
@@ -39,6 +52,7 @@ async function buildSourceCapabilities(): Promise<Array<SourceCapability>> {
       label: 'Curated forecast place metadata',
       category: 'metadata',
       mode,
+      activeProvider: 'fixture',
       status: 'fixture',
       description:
         'Curated forecast place metadata maps location IDs to coordinates and BOM forecast products.',
@@ -51,32 +65,34 @@ async function buildSourceCapabilities(): Promise<Array<SourceCapability>> {
       label: 'Observation feeds',
       category: 'observations',
       mode,
+      activeProvider,
       status: mode === 'fixture' ? 'fixture' : 'ok',
       description:
-        'Current weather observations are sourced from BOM-style JSON payloads keyed by station product and WMO ID.',
+        'Current weather observations are sourced from the active provider stack, with weather-api and FWO JSON support behind the normalized API.',
       productIds: observationProductIds,
       supportsLiveFetch: true,
       note:
         mode === 'fixture'
           ? 'Fixture mode is active by default in this environment.'
-          : 'Live mode targets documented observation JSON feed URLs.',
+          : `Live mode will try ${liveProviders.join(' then ')}.`,
     },
     {
       id: 'forecasts',
       label: 'City forecast feeds',
       category: 'forecasts',
       mode,
-      status: mode === 'fixture' ? 'fixture' : forecastBaseConfigured ? 'ok' : 'degraded',
+      activeProvider,
+      status: forecastLiveStatus,
       description:
-        'Daily forecast periods are derived from BOM-style XML city forecast packages.',
+        'Daily forecast periods are derived from the active provider stack, with weather-api first in live mode and XML fallback where configured.',
       productIds: forecastProductIds,
-      supportsLiveFetch: forecastBaseConfigured,
+      supportsLiveFetch: true,
       note:
         mode === 'fixture'
           ? 'Fixture mode is active by default in this environment.'
-          : forecastBaseConfigured
-            ? 'Live forecast base URL is configured.'
-            : 'Set VITE_BOM_FORECAST_BASE_URL or BOM_FORECAST_BASE_URL to enable live forecast retrieval.',
+          : xmlForecastBaseConfigured
+            ? `Live mode will try ${liveProviders.join(' then ')}.`
+            : `Live mode will try ${liveProviders.join(' then ')}. XML fallback requires BOM_FORECAST_BASE_URL if the FWO provider is selected.`,
     },
   ]
 }
@@ -100,8 +116,10 @@ export async function getHealthStatus() {
     status: hasProblemSource ? 'degraded' : 'ok',
     generatedAt: new Date().toISOString(),
     dataMode: getBomDataMode(),
+    provider: getDefaultProviderForMode(getBomDataMode()),
     sourceStatuses: items.map((item) => ({
       id: item.id,
+      provider: item.activeProvider,
       status: item.status,
     })),
   })
