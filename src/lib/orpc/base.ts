@@ -1,5 +1,6 @@
 import { ORPCError, os } from '@orpc/server'
 import { isBomDataError } from '../bom/errors'
+import { isWeatherAuParseError } from '../bom/weather-au'
 import type { OrpcContext } from './context'
 
 export const api = os.$context<OrpcContext>()
@@ -10,6 +11,16 @@ export async function withBomErrorHandling<TValue>(
   try {
     return await loader()
   } catch (error) {
+    if (isWeatherAuParseError(error)) {
+      throw new ORPCError('INTERNAL_SERVER_ERROR', {
+        message: error.message,
+        data: {
+          code: 'WEATHER_AU_PARSE_ERROR',
+          details: error.details,
+        },
+      })
+    }
+
     if (!isBomDataError(error)) {
       throw error
     }

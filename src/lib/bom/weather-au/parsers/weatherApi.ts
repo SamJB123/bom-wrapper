@@ -215,15 +215,34 @@ const apiEnvelopeSchema = <TData extends z.ZodTypeAny>(dataSchema: TData) =>
     data: dataSchema,
   })
 
+function truncateForDiagnostics(value: unknown) {
+  if (typeof value === 'string') {
+    return value.length > 4000 ? `${value.slice(0, 4000)}…` : value
+  }
+
+  try {
+    const json = JSON.stringify(value, null, 2)
+
+    return json.length > 4000 ? `${json.slice(0, 4000)}…` : json
+  } catch {
+    return value
+  }
+}
+
 function parseEnvelope<TData>(
   schema: z.ZodType<{ metadata?: WeatherApiMetadata; data: TData }>,
   value: unknown,
   message: string,
+  expectedShape: unknown,
 ) {
   const parsed = schema.safeParse(value)
 
   if (!parsed.success) {
-    throw new WeatherAuParseError(message, parsed.error.flatten())
+    throw new WeatherAuParseError(message, {
+      expectedShape,
+      response: truncateForDiagnostics(value),
+      validationErrors: parsed.error.flatten(),
+    })
   }
 
   return {
@@ -243,6 +262,21 @@ export function parseWeatherApiSearchResponse(value: unknown) {
     apiEnvelopeSchema(z.array(searchResultSchema)),
     value,
     'Unable to parse Weather API search response',
+    {
+      metadata: {
+        response_timestamp: 'string',
+        copyright: 'string',
+      },
+      data: [
+        {
+          geohash: 'string',
+          id: 'string',
+          name: 'string',
+          postcode: 'string?',
+          state: 'string',
+        },
+      ],
+    },
   )
 }
 
@@ -251,6 +285,24 @@ export function parseWeatherApiLocationResponse(value: unknown) {
     apiEnvelopeSchema(locationSchema),
     value,
     'Unable to parse Weather API location response',
+    {
+      metadata: {
+        response_timestamp: 'string',
+        copyright: 'string',
+      },
+      data: {
+        geohash: 'string',
+        timezone: 'string',
+        latitude: 'number',
+        longitude: 'number',
+        marine_area_id: 'string | null | undefined',
+        tidal_point: 'string | null | undefined',
+        has_wave: 'boolean?',
+        id: 'string',
+        name: 'string',
+        state: 'string',
+      },
+    },
   )
 }
 
@@ -259,6 +311,24 @@ export function parseWeatherApiWarningsResponse(value: unknown) {
     apiEnvelopeSchema(z.array(warningSummarySchema)),
     value,
     'Unable to parse Weather API warnings response',
+    {
+      metadata: {
+        response_timestamp: 'string',
+        copyright: 'string',
+      },
+      data: [
+        {
+          id: 'string',
+          state: 'string',
+          expiry_time: 'string?',
+          issue_time: 'string?',
+          type: 'string',
+          short_title: 'string',
+          warning_group_type: 'string?',
+          phase: 'string?',
+        },
+      ],
+    },
   )
 }
 
@@ -267,6 +337,24 @@ export function parseWeatherApiWarningDetailResponse(value: unknown) {
     apiEnvelopeSchema(warningDetailSchema),
     value,
     'Unable to parse Weather API warning detail response',
+    {
+      metadata: {
+        response_timestamp: 'string',
+        copyright: 'string',
+        issue_time: 'string?',
+      },
+      data: {
+        id: 'string',
+        type: 'string',
+        title: 'string',
+        short_title: 'string',
+        state: 'string',
+        message: 'string',
+        issue_time: 'string?',
+        expiry_time: 'string?',
+        phase: 'string?',
+      },
+    },
   )
 }
 
@@ -275,6 +363,32 @@ export function parseWeatherApiObservationResponse(value: unknown) {
     apiEnvelopeSchema(observationSchema),
     value,
     'Unable to parse Weather API observation response',
+    {
+      metadata: {
+        response_timestamp: 'string',
+        copyright: 'string',
+        issue_time: 'string?',
+        observation_time: 'string?',
+      },
+      data: {
+        temp: 'number',
+        temp_feels_like: 'number?',
+        wind:
+          '{ speed_kilometre?: number, speed_knot?: number, direction?: string, gust_speed_knot?: number, gust_speed_kilometre?: number } | null | undefined',
+        gust:
+          '{ speed_kilometre?: number, speed_knot?: number } | null | undefined',
+        max_gust:
+          '{ speed_kilometre?: number, speed_knot?: number, time?: string } | null | undefined',
+        max_temp:
+          '{ time?: string, value?: number } | null | undefined',
+        min_temp:
+          '{ time?: string, value?: number } | null | undefined',
+        rain_since_9am: 'number?',
+        humidity: 'number?',
+        station:
+          '{ bom_id?: string, name?: string, distance?: number } | null | undefined',
+      },
+    },
   )
 }
 
@@ -283,6 +397,22 @@ export function parseWeatherApiRainForecastResponse(value: unknown) {
     apiEnvelopeSchema(rainForecastSchema),
     value,
     'Unable to parse Weather API rain forecast response',
+    {
+      metadata: {
+        response_timestamp: 'string',
+        copyright: 'string',
+      },
+      data: {
+        amount: {
+          min: 'number | null',
+          max: 'number | null',
+          units: 'string',
+        },
+        chance: 'number',
+        start_time: 'string?',
+        period: 'string?',
+      },
+    },
   )
 }
 
@@ -291,6 +421,31 @@ export function parseWeatherApiDailyForecastResponse(value: unknown) {
     apiEnvelopeSchema(z.array(dailyForecastSchema)),
     value,
     'Unable to parse Weather API daily forecast response',
+    {
+      metadata: {
+        response_timestamp: 'string?',
+        copyright: 'string?',
+        issue_time: 'string?',
+      },
+      data: [
+        {
+          date: 'string',
+          temp_max: 'number | null | undefined',
+          temp_min: 'number | null | undefined',
+          extended_text: 'string?',
+          short_text: 'string?',
+          icon_descriptor: 'string?',
+          rain:
+            '{ amount?: { min: number | null, max: number | null, units: string }, chance?: number } | undefined',
+          uv:
+            '{ category?: string | null, end_time?: string | null, max_index?: number | null, start_time?: string | null } | undefined',
+          astronomical:
+            '{ sunrise_time?: string, sunset_time?: string } | undefined',
+          now:
+            '{ is_night?: boolean, now_label?: string, later_label?: string, temp_now?: number | null, temp_later?: number | null } | undefined',
+        },
+      ],
+    },
   )
 }
 
@@ -299,5 +454,24 @@ export function parseWeatherApiHourlyForecastResponse(value: unknown) {
     apiEnvelopeSchema(z.array(hourlyForecastSchema)),
     value,
     'Unable to parse Weather API hourly forecast response',
+    {
+      metadata: {
+        response_timestamp: 'string?',
+        copyright: 'string?',
+        issue_time: 'string?',
+      },
+      data: [
+        {
+          time: 'string',
+          temp: 'number | null | undefined',
+          temp_feels_like: 'number | null | undefined',
+          dew_point: 'number | null | undefined',
+          relative_humidity: 'number | null | undefined',
+          icon_descriptor: 'string?',
+          wind:
+            '{ speed_knot?: number, speed_kilometre?: number, direction?: string, gust_speed_knot?: number, gust_speed_kilometre?: number } | undefined',
+        },
+      ],
+    },
   )
 }

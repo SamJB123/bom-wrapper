@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { WeatherApi } from '../api'
+import { WeatherAuParseError } from '../errors'
+import { parseWeatherApiDailyForecastResponse } from '../parsers/weatherApi'
 import {
   weatherApiDailyForecastFixture,
   weatherApiHourlyForecastFixture,
@@ -102,5 +104,37 @@ describe('WeatherApi', () => {
     expect(hourly?.[0]?.wind?.direction).toBe('SW')
     expect(warnings?.[0]?.id).toBe('NSW_MW004_IDN20400')
     expect(warning?.title).toContain('Marine Wind Warning')
+  })
+
+  it('includes response and expected shape in parse diagnostics', () => {
+    expect(() =>
+      parseWeatherApiDailyForecastResponse({
+        data: [
+          {
+            date: null,
+          },
+        ],
+      }),
+    ).toThrowError(WeatherAuParseError)
+
+    try {
+      parseWeatherApiDailyForecastResponse({
+        data: [
+          {
+            date: null,
+          },
+        ],
+      })
+    } catch (error) {
+      expect(error).toBeInstanceOf(WeatherAuParseError)
+
+      const parseError = error as WeatherAuParseError
+
+      expect(parseError.details?.response).toContain('"date": null')
+      expect(parseError.details?.expectedShape).toMatchObject({
+        data: expect.any(Array),
+      })
+      expect(parseError.details?.validationErrors).toBeTruthy()
+    }
   })
 })

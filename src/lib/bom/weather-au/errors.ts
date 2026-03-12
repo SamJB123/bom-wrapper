@@ -5,6 +5,12 @@ export class WeatherAuError extends Error {
   }
 }
 
+export type WeatherAuParseErrorDetails = {
+  expectedShape?: unknown
+  response?: unknown
+  validationErrors?: unknown
+}
+
 export class WeatherAuHttpError extends WeatherAuError {
   constructor(
     message: string,
@@ -18,7 +24,7 @@ export class WeatherAuHttpError extends WeatherAuError {
 }
 
 export class WeatherAuParseError extends WeatherAuError {
-  constructor(message: string, readonly details?: unknown) {
+  constructor(message: string, readonly details?: WeatherAuParseErrorDetails) {
     super(message)
     this.name = 'WeatherAuParseError'
   }
@@ -29,4 +35,10 @@ export class WeatherAuPlaceError extends WeatherAuError {
     super(message)
     this.name = 'WeatherAuPlaceError'
   }
+}
+
+export function isWeatherAuParseError(
+  error: unknown,
+): error is WeatherAuParseError {
+  return error instanceof WeatherAuParseError
 }
